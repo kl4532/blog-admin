@@ -20,6 +20,7 @@
     "express-validator": "^5.3.1",
     "jquery": "^3.3.1",
     "mongoose": "^5.4.9",
+    "paginate": "^0.2.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "popper.js": "^1.14.7"

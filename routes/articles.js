@@ -27,7 +27,7 @@ router.get('/edit/:id', ensureAuthenticated, (req, res)=>{
 router.post('/add', (req, res)=>{
   req.checkBody('title', 'Title is required').notEmpty();
   //req.checkBody('author', 'Author is required').notEmpty();
-  req.checkBody('body', 'Body is required').notEmpty();
+  req.checkBody('body', 'Text is too short').isLength({ min: 50 });
 
   // Get errors
   let errors = req.validationErrors();
@@ -41,6 +41,9 @@ router.post('/add', (req, res)=>{
     article.title = req.body.title;
     article.author = req.user._id;
     article.body = req.body.body;
+    article.usr = req.user.username;
+    article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
+    article.date = currDate();
     article.save((err)=>{
       if(err) throw err;
       req.flash('success', 'Article Added');
@@ -49,7 +52,7 @@ router.post('/add', (req, res)=>{
   }
 });
 // update submit
-router.post('/edit/:id', (req, res)=>{
+router.post('/edit/:id', ensureAuthenticated, (req, res)=>{
   let article = {};
   article.title = req.body.title;
   article.author = req.user._id;
@@ -78,9 +81,8 @@ router.delete('/:id', (req,res)=>{
       });
     }
   })
-
 });
-router.get('/:id', ensureAuthenticated, (req, res)=>{
+router.get('/:id', (req, res)=>{
   Article.findById(req.params.id, (err, article)=>{
     User.findById(article.author, (err, user)=>{
       res.render('article', {
@@ -101,3 +103,9 @@ function ensureAuthenticated(req, res, next){
   }
 }
 module.exports = router;
+
+function currDate(){
+  var d = new Date();
+  datetime = d.getDate() + '/' + (1+ d.getMonth()) + '/' + d.getFullYear() + ', ' + d.getHours() + ':' + d.getMinutes();
+  return datetime;
+}

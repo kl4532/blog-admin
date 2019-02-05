@@ -7,6 +7,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const config = require('./config/database');
+var paginate = require('paginate')();
 
 // Init App
 const app = express();
@@ -65,12 +66,35 @@ app.get('*', (req, res, next)=>{
 app.get('/', (req, res) => {
   Article.find({}, (err, articles)=>{
     if(err) throw err;
+    let totalItems = articles.length;
+    let itemsPerPage = 2;
+    let pageNum = 1;
+    var pagination = paginate.page(totalItems, itemsPerPage, pageNum);
+    var paginationHtml = pagination.render({ baseUrl: '/' });
+    console.log(articles);
     res.render('index', {
       title: 'Articles',
-      articles: articles
+      articles: articles,
+      paginationHtml: paginationHtml
     });
   });
 });
+// pagination
+// <ul class="list-group">
+//   <% for (var i = 2; i > 0; i--) { %>
+//     <div class="card mb-4">
+//       <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+//       <div class="card-body">
+//         <h2 class="card-title"><%= articles[i].title %></h2>
+//         <p class="card-text"><%= articles[i].shorten %></p>
+//         <a href="/articles/<%= articles[i].id %>" class="btn btn-primary">Read More &rarr;</a>
+//       </div>
+//       <div class="card-footer text-muted">
+//         Posted on <%= articles[i].date %> by
+//         <a href="#"><%= articles[i].usr %></a>
+//       </div>
+//     </div>
+//   <%  }; %>
 // End routes
 
 // Route files
@@ -78,83 +102,6 @@ let articles =require('./routes/articles');
 let users =require('./routes/users');
 app.use('/articles', articles);
 app.use('/users', users);
-app.listen(80, ()=>{
-  console.log("server is running on port 80");
+app.listen(3000, ()=>{
+  console.log("server is running on port 3000");
 });
-
-// app.get('/', (req, res) => {
-//   Article.find({}, (err, articles)=>{
-//     if(err) throw err;
-//     res.render('index', {
-//       title: 'Articles',
-//       articles: articles
-//     });
-//   });
-// });
-// app.get('/article/:id', (req, res)=>{
-//   Article.findById(req.params.id, (err, article)=>{
-//     res.render('article', {
-//       article: article,
-//     });
-//   });
-// });
-// app.get('/articles/add', (req, res)=>{
-//   res.render('add_article', {
-//     title: 'Add Article'
-//   })
-// });
-// app.get('/article/edit/:id', (req, res)=>{
-//   Article.findById(req.params.id, (err, article)=>{
-//     res.render('edit_article', {
-//       title: 'Edit article',
-//       article: article,
-//     });
-//   });
-// });
-// //update submit
-// app.post('/articles/add', (req, res)=>{
-//   req.checkBody('title', 'Title is required').notEmpty();
-//   req.checkBody('author', 'Author is required').notEmpty();
-//   req.checkBody('body', 'Body is required').notEmpty();
-//
-//   // Get errors
-//   let errors = req.validationErrors();
-//   if(errors){
-//     res.render('add_article', {
-//       title: 'Add Article',
-//       errors: errors,
-//     });
-//   }else { // if no errors -> add article
-//     let article = new Article();
-//     article.title = req.body.title;
-//     article.author = req.body.author;
-//     article.body = req.body.body;
-//     article.save((err)=>{
-//       if(err) throw err;
-//       req.flash('success', 'Article Added');
-//       res.redirect('/');
-//     })
-//   }
-// });
-// // update submit
-// app.post('/articles/edit/:id', (req, res)=>{
-//   let article = {};
-//   article.title = req.body.title;
-//   article.author = req.body.author;
-//   article.body = req.body.body;
-//
-//   let query = {_id:req.params.id}
-//   Article.update(query, article, (err)=>{
-//     if(err) throw err;
-//     req.flash('success', 'Article updated');
-//     res.redirect('/');
-//   })
-// });
-// app.delete('/article/:id', (req,res)=>{
-//   let query = {_id:req.params.id}
-//
-//   Article.remove(query, function(err){
-//     if(err) throw err;
-//     res.send('Success');
-//   });
-// });

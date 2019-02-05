@@ -13,7 +13,19 @@ let articleSchema = mongoose.Schema({
   body:{
     type: String,
     required: true
-  }
+  },
+  shorten:{
+    type: String,
+    required: true
+  },
+  usr:{
+    type: String,
+    required: true
+  },
+  date:{
+    type: String,
+    required: true
+  },
 });
 
 let Article = module.exports = mongoose.model('Article', articleSchema);
