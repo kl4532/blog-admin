@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="/styles.css">
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <% include partials/nav.ejs %>
+    <div class="well well-lg center">
+      <h2><%= article.title %></h2>
+      <h4>Author: <%= author %></h4>
+      <p><%= article.body %></p>
+      <% if(user) {%>
+        <% if(user.id == article.author) {%>
+          <a href="/articles/edit/<%= article.id %>"><button class="btn btn-info" >edit</button></a>
+          <a href="#" ><button data-id="<%= article.id %>" class="btn btn-danger delete-article" >delete</button></a>
+      <% }} %>
+    </div>
+    <script src="/js/main.js" charset="utf-8"></script>
+  </body>
+</html>

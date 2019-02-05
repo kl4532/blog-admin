@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <% include partials/nav.ejs %>
+    <h1>Register</h1>
+    <form id="add-form" method="POST" action='/users/register'>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input name="name" type="text" class="form-control" id="name" placeholder="name" >
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" id="email" placeholder="nmail" >
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input name="username" type="text" class="form-control" id="username" placeholder="username" >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input name="password" type="text" class="form-control" id="password" placeholder="password" >
+      </div>
+      <div class="form-group">
+        <label for="password2">Confirm</label>
+        <input name="password2" type="text" class="form-control" id="password2"  >
+      </div>
+      <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+    </form>
+  </body>
+</html>

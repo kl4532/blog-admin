@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="/styles.css">
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <% include partials/nav.ejs %>
+    <h1><%= title %></h1>
+    <ul class="list-group">
+    <% articles.forEach(function(obj){ %>
+      <a href="/articles/<%= obj.id %>"><li class="center list-group-item"><%= obj.title%></li></a>
+    <%  }); %>
+  </ul>
+  </body>
+</html>
