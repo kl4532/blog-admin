@@ -8,11 +8,7 @@
   <body>
     <% include partials/nav.ejs %>
     <h1><%= title %></h1>
-    <ul class="list-group">
-      <% articles.forEach(function(obj){ %>
-        <a href="/articles/<%= obj.id %>"><li class="center list-group-item"><%= obj.title%></li></a>
-      <%  }); %>
-    </ul>
+
   <!-- Page Content -->
 <div class="container">
 
@@ -21,33 +17,24 @@
     <!-- Blog Entries Column -->
     <div class="col-md-8">
 
-      <h1 class="my-4">Page Heading
-        <small>Secondary Text</small>
-      </h1>
-
       <!-- Blog Post -->
+      <% if(page!==1){ %> <!-- for pages different than 1(home)-->
+        <% if(articles.length-1-(itemsPerPage*(page-1))< itemsPerPage) {%> <!-- last page not full -->
+          <% for (var i = articles.length-1-(itemsPerPage*(page-1)); i>=0; i--) { %>
+            <% include partials/showArticle.ejs %>
+        <% }}else { %> <!-- for full pages not 1(home)-->
+          <% for (var i = articles.length-1-(itemsPerPage*(page-1)); i > articles.length-1-(itemsPerPage*(page-1))-(itemsPerPage); i--) { %>
+            <% include partials/showArticle.ejs %>
+      <% }}}else {%> <!-- for page 1(home)-->
+        <%if(articles.length <= itemsPerPage){%> <!-- for page 1 not full-->
+          <% for (var i = articles.length-1; i>=0; i--) { %>
+            <% include partials/showArticle.ejs %>
+        <% }}else {%> <!-- for page 1 full-->
+              <% for (var i = articles.length-1; i > articles.length-1- itemsPerPage; i--) { %>
+                <% include partials/showArticle.ejs %>
+      <% }}}; %>
 
-      <ul class="list-group">
-
-        <% articles.slice().reverse().forEach(function(obj){ %>
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-            <div class="card-body">
-              <h2 class="card-title"><%= obj.title%></h2>
-              <p class="card-text"><%= obj.shorten %></p>
-              <a href="/articles/<%= obj.id %>" class="btn btn-primary">Read More &rarr;</a>
-            </div>
-            <div class="card-footer text-muted">
-              Posted on <%= obj.date %> by
-              <a href="#"><%= obj.usr %></a>
-            </div>
-          </div>
-        <%  }); %>
-
-
-      <!-- Pagination -->
-      <%- paginationHtml %>
-
+        <% include partials/pagination.ejs %>
     </div>
 
     <!-- Sidebar Widgets Column -->

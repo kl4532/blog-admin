@@ -64,37 +64,44 @@ app.get('*', (req, res, next)=>{
 });
 // Home Route
 app.get('/', (req, res) => {
+  if(req.query.page<1){
+    res.render("404");
+  }
   Article.find({}, (err, articles)=>{
     if(err) throw err;
-    let totalItems = articles.length;
-    let itemsPerPage = 2;
-    let pageNum = 1;
+    let totalItems = articles.length, itemsPerPage = 2, pageNum=1;
+    let pages = Math.ceil(totalItems/itemsPerPage);
+    let page = (typeof req.query.page === 'undefined') ? 1 : req.query.page; // check if page is home(undefined) or clicked by user
     var pagination = paginate.page(totalItems, itemsPerPage, pageNum);
-    var paginationHtml = pagination.render({ baseUrl: '/' });
-    console.log(articles);
-    res.render('index', {
-      title: 'Articles',
-      articles: articles,
-      paginationHtml: paginationHtml
-    });
+    // var paginationHtml = pagination.render({ baseUrl: '/' });
+      res.render('index', {
+        title: 'Articles',
+        articles: articles,
+        //paginationHtml: paginationHtml,
+        page: parseInt(page),
+        pages: pages,
+        itemsPerPage: itemsPerPage,
+      });
   });
 });
-// pagination
-// <ul class="list-group">
-//   <% for (var i = 2; i > 0; i--) { %>
-//     <div class="card mb-4">
-//       <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-//       <div class="card-body">
-//         <h2 class="card-title"><%= articles[i].title %></h2>
-//         <p class="card-text"><%= articles[i].shorten %></p>
-//         <a href="/articles/<%= articles[i].id %>" class="btn btn-primary">Read More &rarr;</a>
-//       </div>
-//       <div class="card-footer text-muted">
-//         Posted on <%= articles[i].date %> by
-//         <a href="#"><%= articles[i].usr %></a>
-//       </div>
-//     </div>
-//   <%  }; %>
+// // pagination
+//
+// <% articles.slice().reverse().forEach(function(obj){ %>
+// <div class="card mb-4">
+//   <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+//   <div class="card-body">
+//     <h2 class="card-title"><%= obj.title%></h2>
+//     <p class="card-text"><%= obj.shorten %></p>
+//     <a href="/articles/<%= obj.id %>" class="btn btn-primary">Read More &rarr;</a>
+//   </div>
+//   <div class="card-footer text-muted">
+//     Posted on <%= obj.date %> by
+//     <a href="#"><%= obj.usr %></a>
+//   </div>
+// </div>
+// <%  }); %>
+
+
 // End routes
 
 // Route files
