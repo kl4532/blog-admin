@@ -8,5 +8,14 @@
   <div class="card-footer text-muted">
     Posted on <%= articles[i].date %> by
     <a href="#"><%= articles[i].usr %></a>
+    <div>
+      <% if(typeof articles[i].category === 'string'){ %>
+        <a href="/?category=<%= articles[i].category %>">#<%= articles[i].category %></a>
+        <%= console.log(typeof articles[i].category) %>
+      <% }else { %>
+        <% articles[i].category.forEach((cat)=>{ %>
+          <a href="/?category=<%= cat %>">#<%= cat %></a>
+      <% })}; %>
+    </div>
   </div>
 </div>

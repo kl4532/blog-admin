@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+var paginate = require('paginate')();
 
 // Bring in models
 let Article = require('../models/article');
@@ -28,6 +29,7 @@ router.post('/add', (req, res)=>{
   req.checkBody('title', 'Title is required').notEmpty();
   //req.checkBody('author', 'Author is required').notEmpty();
   req.checkBody('body', 'Text is too short').isLength({ min: 50 });
+  req.checkBody('category', 'Category is required').notEmpty();
 
   // Get errors
   let errors = req.validationErrors();
@@ -41,6 +43,7 @@ router.post('/add', (req, res)=>{
     article.title = req.body.title;
     article.author = req.user._id;
     article.body = req.body.body;
+    article.category = req.body.category;
     article.usr = req.user.username;
     article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
     article.date = currDate();
@@ -57,7 +60,10 @@ router.post('/edit/:id', ensureAuthenticated, (req, res)=>{
   article.title = req.body.title;
   article.author = req.user._id;
   article.body = req.body.body;
-
+  article.category = req.body.category;
+  article.usr = req.user.username;
+  article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
+  article.date = currDate();
   let query = {_id:req.params.id}
   Article.updateOne(query, article, (err)=>{
     if(err) throw err;
@@ -92,6 +98,25 @@ router.get('/:id', (req, res)=>{
     });
   });
 });
+router.post('/search', (req, res)=>{
+  Article.find({$text : { $search: req.body.search}}, (err, articles)=>{
+    if(err) throw err;
+    let totalItems = articles.length, itemsPerPage = 6, pageNum=1;
+    let pages = Math.ceil(totalItems/itemsPerPage);
+    let page = (typeof req.query.page === 'undefined') ? 1 : req.query.page; // check if page is home(undefined) or clicked by user
+    var pagination = paginate.page(totalItems, itemsPerPage, pageNum);
+    // var paginationHtml = pagination.render({ baseUrl: '/' });
+      res.render('index', {
+        title: 'Articles',
+        articles: articles,
+        page: parseInt(page),
+        pages: pages,
+        itemsPerPage: itemsPerPage,
+        currCat: "all",
+      });
+    });
+});
+
 
 // Access control
 function ensureAuthenticated(req, res, next){

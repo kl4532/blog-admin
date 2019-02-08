@@ -41,17 +41,19 @@
     <div class="col-md-4">
 
       <!-- Search Widget -->
-      <div class="card my-4">
-        <h5 class="card-header">Search</h5>
-        <div class="card-body">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
-            <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
+      <form id="search-form" method="POST" action='/articles/search'>
+        <div class="card my-4">
+          <h5 class="card-header">Search</h5>
+          <div class="card-body">
+            <div class="input-group">
+              <input name="search" type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="submit">Go!</button>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+    </form>
 
       <!-- Categoriestext Widget -->
       <div class="card my-4">
@@ -61,26 +63,26 @@
             <div class="col-lg-6">
               <ul class="list-unstyled mb-0">
                 <li>
-                  <a href="#">Web Design</a>
+                  <a href="/?category=lifestyle">Lifestyle</a>
                 </li>
                 <li>
-                  <a href="#">HTML</a>
+                  <a href="/?category=food">Food</a>
                 </li>
                 <li>
-                  <a href="#">Freebies</a>
+                  <a href="/?category=books">Books</a>
                 </li>
               </ul>
             </div>
             <div class="col-lg-6">
               <ul class="list-unstyled mb-0">
                 <li>
-                  <a href="#">JavaScript</a>
+                  <a href="/?category=running">Running</a>
                 </li>
                 <li>
-                  <a href="#">CSS</a>
+                  <a href="/?category=zen">Zen</a>
                 </li>
                 <li>
-                  <a href="#">Tutorials</a>
+                  <a href="/?category=kubica">Kubica</a>
                 </li>
               </ul>
             </div>

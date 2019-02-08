@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
-
+mongoose.set('useCreateIndex', true);
 // Article Schema
 let articleSchema = mongoose.Schema({
   title:{
     type: String,
-    required: true
+    required: true,
   },
   author:{
     type: String,
-    required: true
+    required: true,
   },
   body:{
     type: String,
-    required: true
+    required: true,
   },
   shorten:{
     type: String,
@@ -24,8 +24,12 @@ let articleSchema = mongoose.Schema({
   },
   date:{
     type: String,
-    required: true
+    required: true,
   },
+  category: {
+    type: { name: String },
+    required: true,
+  }
 });
 
 let Article = module.exports = mongoose.model('Article', articleSchema);

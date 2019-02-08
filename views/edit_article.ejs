@@ -16,6 +16,17 @@
         <label for="body">Text</label>
         <textarea name="body" class="form-control" id="body" rows="3" ><%= article.body %></textarea>
       </div>
+      <label for="category">Category</label>
+      <div>
+        <select class="custom-select" multiple name="category">
+          <option value="food" name>Food</option>
+          <option value="zen" selected>Zen</option>
+          <option value="lifestyle">Lifestyle</option>
+          <option value="running">Running</option>
+          <option value="books">Books</option>
+          <option value="kubica">Kubica</option>
+        </select>
+      </div>
       <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
     </form>
   </body>

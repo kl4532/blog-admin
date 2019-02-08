@@ -67,41 +67,67 @@ app.get('/', (req, res) => {
   if(req.query.page<1){
     res.render("404");
   }
-  Article.find({}, (err, articles)=>{
-    if(err) throw err;
-    let totalItems = articles.length, itemsPerPage = 2, pageNum=1;
-    let pages = Math.ceil(totalItems/itemsPerPage);
-    let page = (typeof req.query.page === 'undefined') ? 1 : req.query.page; // check if page is home(undefined) or clicked by user
-    var pagination = paginate.page(totalItems, itemsPerPage, pageNum);
-    // var paginationHtml = pagination.render({ baseUrl: '/' });
-      res.render('index', {
-        title: 'Articles',
-        articles: articles,
-        //paginationHtml: paginationHtml,
-        page: parseInt(page),
-        pages: pages,
-        itemsPerPage: itemsPerPage,
+  if(req.query.category){
+    Article.find({category: req.query.category}, (err, articles)=>{
+      if(err) throw err;
+      let totalItems = articles.length, itemsPerPage = 2, pageNum=1;
+      let pages = Math.ceil(totalItems/itemsPerPage);
+      let page = (typeof req.query.page === 'undefined') ? 1 : req.query.page; // check if page is home(undefined) or clicked by user
+      var pagination = paginate.page(totalItems, itemsPerPage, pageNum);
+        res.render('index', {
+          title: 'Articles',
+          articles: articles,
+          page: parseInt(page),
+          pages: pages,
+          itemsPerPage: itemsPerPage,
+          currCat: req.query.category,
+        });
+    });
+  }else{
+    Article.find({}, (err, articles)=>{
+      if(err) throw err;
+      let totalItems = articles.length, itemsPerPage = 6, pageNum=1;
+      let pages = Math.ceil(totalItems/itemsPerPage);
+      let page = (typeof req.query.page === 'undefined') ? 1 : req.query.page; // check if page is home(undefined) or clicked by user
+      var pagination = paginate.page(totalItems, itemsPerPage, pageNum);
+      // var paginationHtml = pagination.render({ baseUrl: '/' });
+        res.render('index', {
+          title: 'Articles',
+          articles: articles,
+          page: parseInt(page),
+          pages: pages,
+          itemsPerPage: itemsPerPage,
+          currCat: "all",
+        });
       });
-  });
+  }
 });
-// // pagination
-//
-// <% articles.slice().reverse().forEach(function(obj){ %>
-// <div class="card mb-4">
-//   <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-//   <div class="card-body">
-//     <h2 class="card-title"><%= obj.title%></h2>
-//     <p class="card-text"><%= obj.shorten %></p>
-//     <a href="/articles/<%= obj.id %>" class="btn btn-primary">Read More &rarr;</a>
-//   </div>
-//   <div class="card-footer text-muted">
-//     Posted on <%= obj.date %> by
-//     <a href="#"><%= obj.usr %></a>
-//   </div>
-// </div>
-// <%  }); %>
-
-
+// // for testing
+app.get('/test', (req, res) => {
+  let longtext= "fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das";
+  for(let i=0; i< 100; i++){
+    let article = new Article();
+    article.title = "art"+i;
+    article.author = "5c59ef66cdb531332ceda4f9";
+    article.body = longtext;
+    article.category = addrandom();
+    article.usr = "admin";
+    article.shorten = longtext.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
+    article.date = "xxx";
+    article.save();
+  }
+});
+function addrandom(){
+  let categories=[], arr = ['zen', 'lifestyle', 'running', 'food', 'books', 'kubica'];
+  let k = rand(0,6);
+  for(let i=0; i<k; i++){
+    categories.push(arr[i]);
+  }
+  return categories;
+}
+function rand(min, max){
+  return Math.floor(Math.random()*(1+max-min))+min;
+}
 // End routes
 
 // Route files
@@ -112,3 +138,7 @@ app.use('/users', users);
 app.listen(3000, ()=>{
   console.log("server is running on port 3000");
 });
+//
+// <% articles[i].category.forEach((cat)=>{ %>
+//   <a href="#">#<%= cat %></a>
+// <% }) %>
