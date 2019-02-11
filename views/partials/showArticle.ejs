@@ -16,6 +16,9 @@
         <% articles[i].category.forEach((cat)=>{ %>
           <a href="/?category=<%= cat %>">#<%= cat %></a>
       <% })}; %>
+      <% if(articles[i].comment) {%>
+        <p>Comments (<%= articles[i].comment.length %>)</p>
+      <% } %>
     </div>
   </div>
 </div>

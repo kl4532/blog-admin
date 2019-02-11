@@ -45,7 +45,7 @@ router.post('/add', (req, res)=>{
     article.body = req.body.body;
     article.category = req.body.category;
     article.usr = req.user.username;
-    article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
+    article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…replace"); // take first 20 words
     article.date = currDate();
     article.save((err)=>{
       if(err) throw err;
@@ -115,6 +115,28 @@ router.post('/search', (req, res)=>{
         currCat: "all",
       });
     });
+});
+router.post('/add-comment/:id', function(req, res) {
+  req.checkBody('name', 'Your name is required').notEmpty();
+  req.checkBody('comment', 'Text in comment missing...').notEmpty();
+  let errors = req.validationErrors();
+  let id = req.params.id;
+  if(errors){
+    res.render(`/articles/${id}`, {
+      errors: errors,
+    });
+  }else{
+    let new_comment = {
+        name: req.body.name,
+        comment: req.body.comment,
+        created: currDate(),
+    };
+    Article.updateOne({_id:req.params.id}, {$push: { comment: new_comment }}, (err)=>{
+      if(err) throw err;
+      req.flash('success', 'Comment added');
+      res.redirect(`/articles/${id}`);
+    })
+  }
 });
 
 

@@ -29,6 +29,14 @@ let articleSchema = mongoose.Schema({
   category: {
     type: { name: String },
     required: true,
+  },
+  comment: {
+    type: {
+      name: String,
+      comment: String,
+      created: String
+    },
+    required: true,
   }
 });
 

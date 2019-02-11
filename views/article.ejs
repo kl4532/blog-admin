@@ -17,6 +17,17 @@
           <a href="#" ><button data-id="<%= article.id %>" class="btn btn-danger delete-article" >delete</button></a>
       <% }} %>
     </div>
+    <h4>Comments</h4>
+    <form id="add-comment" method="POST" action='/articles/add-comment/<%= article._id%>'>
+      <input type="text" name="name" id="comment">
+      <input type="text" name="comment" id="name">
+      <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
+    </form>
+    <% if(article.comment){ %>
+      <% article.comment.forEach((com)=>{ %>
+        <p><%= com.name %>: <%= com.comment %>, <%= com.created %></p>
+    <% })}; %>
+
     <script src="/js/main.js" charset="utf-8"></script>
   </body>
 </html>
