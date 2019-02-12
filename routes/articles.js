@@ -121,6 +121,7 @@ router.post('/add-comment/:id', function(req, res) {
   req.checkBody('comment', 'Text in comment missing...').notEmpty();
   let errors = req.validationErrors();
   let id = req.params.id;
+  let d = new Date();
   if(errors){
     res.render(`/articles/${id}`, {
       errors: errors,
@@ -130,6 +131,7 @@ router.post('/add-comment/:id', function(req, res) {
         name: req.body.name,
         comment: req.body.comment,
         created: currDate(),
+        id: d.getTime(),
     };
     Article.updateOne({_id:req.params.id}, {$push: { comment: new_comment }}, (err)=>{
       if(err) throw err;
@@ -138,7 +140,14 @@ router.post('/add-comment/:id', function(req, res) {
     })
   }
 });
-
+router.delete('/', ensureAuthenticated, (req,res)=>{ // delete comment
+  const id = req.query.id; // article id
+  const cid = parseInt(req.query.cid); // comment id
+      Article.updateOne({_id: id}, { $pull: {"comment" : {id: cid}}}, function(err){
+        if(err) throw err;
+        res.redirect(`/articles/${id}`);
+      });
+});
 
 // Access control
 function ensureAuthenticated(req, res, next){

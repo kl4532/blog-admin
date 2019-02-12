@@ -11,7 +11,6 @@
     <div>
       <% if(typeof articles[i].category === 'string'){ %>
         <a href="/?category=<%= articles[i].category %>">#<%= articles[i].category %></a>
-        <%= console.log(typeof articles[i].category) %>
       <% }else { %>
         <% articles[i].category.forEach((cat)=>{ %>
           <a href="/?category=<%= cat %>">#<%= cat %></a>

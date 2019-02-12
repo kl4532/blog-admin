@@ -19,13 +19,18 @@
     </div>
     <h4>Comments</h4>
     <form id="add-comment" method="POST" action='/articles/add-comment/<%= article._id%>'>
+      <textarea placeholder="Write your comment here!" type="text" name="comment" class="pb-cmnt-textarea"></textarea>
       <input type="text" name="name" id="comment">
-      <input type="text" name="comment" id="name">
       <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
     </form>
     <% if(article.comment){ %>
-      <% article.comment.forEach((com)=>{ %>
+      <% article.comment.reverse().forEach((com)=>{ %>
         <p><%= com.name %>: <%= com.comment %>, <%= com.created %></p>
+      <% if(user) {%>
+        <% if(user.id==article.author) {%>
+          <a href="/?id=<%= article.id %>&cid=<%= com.id %>" ><button data-id="<%= article.id %>" data-cid="<%= com.id %>" class="btn btn-danger delete-comment" >delete</button></a>
+        <% }%>
+      <% } %>
     <% })}; %>
 
     <script src="/js/main.js" charset="utf-8"></script>

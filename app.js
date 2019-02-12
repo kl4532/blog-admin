@@ -86,7 +86,7 @@ app.get('/', (req, res) => {
   }else{
     Article.find({}, (err, articles)=>{
       if(err) throw err;
-      let totalItems = articles.length, itemsPerPage = 17, pageNum=1;
+      let totalItems = articles.length, itemsPerPage = 3, pageNum=1;
       let pages = Math.ceil(totalItems/itemsPerPage);
       let page = (typeof req.query.page === 'undefined') ? 1 : req.query.page; // check if page is home(undefined) or clicked by user
       var pagination = paginate.page(totalItems, itemsPerPage, pageNum);

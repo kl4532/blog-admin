@@ -34,9 +34,10 @@ let articleSchema = mongoose.Schema({
     type: {
       name: String,
       comment: String,
-      created: String
+      created: String,
+      id: String,
     },
-    required: true,
+    required: false,
   }
 });
 
