@@ -7,12 +7,12 @@
   </head>
   <body>
     <% include partials/nav.ejs %>
-    <div class="well well-lg center art-content" style="">
+    <div class="art-content spacing" >
       <% if(article.img){ %>
         <img class="card-img-top" src="../images/<%= article.author %><%= article.title%>.jpg" alt="Img">
       <%} %>
-      <h2><%= article.title %></h2>
-      <h4>Author: <%= author %></h4>
+      <h1><%= article.title %></h1>
+      <h5 class="text-center">by: <%= author %></h5>
       <p><%= article.body %></p>
       <% if(user) {%>
         <% if(user.id == article.author) {%>
@@ -20,8 +20,8 @@
           <a href="#" ><button data-id="<%= article.id %>" class="btn btn-danger delete-article" >delete</button></a>
       <% }} %>
     </div>
-
-    <div class="form-group art-comments center">
+    <hr />
+    <div class="form-group art-comments spacing">
       <h4>Comments</h4>
       <ul class="list-group">
         <% if(article.comment){ %>
@@ -60,6 +60,7 @@
         </form>
       </div>
     </div>
+    <% include partials/footer.ejs %>
     <script src="/js/main.js" charset="utf-8"></script>
   </body>
 </html>

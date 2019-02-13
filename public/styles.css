@@ -1,7 +1,7 @@
-.well {
-border-style:solid;
+html, body {
+  overflow: auto;
 }
-.center{
+.spacing{
   margin-left: 100px;
   margin-right: 100px;
 }
@@ -19,7 +19,11 @@ h1{
   border-color: #d6e9c6;
 }
 .art-content{
-  text-align: center;
+  text-align: justify;
 }
 .art-comments{
+}
+.no-art{
+  color: gray;
+  padding: 30px;
 }

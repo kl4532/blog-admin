@@ -7,8 +7,6 @@
   </head>
   <body>
     <% include partials/nav.ejs %>
-    <h1><%= title %></h1>
-
   <!-- Page Content -->
 <div class="container">
 
@@ -33,8 +31,11 @@
               <% for (var i = articles.length-1; i > articles.length-1- itemsPerPage; i--) { %>
                 <% include partials/showArticle.ejs %>
       <% }}}; %>
-
+      <% if(articles.length==0){ %>
+        <h1 class="no-art"><i>No articles yet...</i></h1>
+      <% }else{ %>
         <% include partials/pagination.ejs %>
+      <% } %>
     </div>
 
     <!-- Sidebar Widgets Column -->
@@ -91,12 +92,12 @@
       </div>
 
       <!-- Side Widget -->
-      <div class="card my-4">
+      <!-- <div class="card my-4">
         <h5 class="card-header">Side Widget</h5>
         <div class="card-body">
           You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
         </div>
-      </div>
+      </div> -->
 
     </div>
 
@@ -107,13 +108,7 @@
 <!-- /.container -->
 
 <!-- Footer -->
-<footer class="py-5 bg-dark">
-  <div class="container">
-    <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-  </div>
-  <!-- /.container -->
-</footer>
-
+<% include partials/footer.ejs %>
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

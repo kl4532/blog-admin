@@ -45,7 +45,7 @@ router.post('/add', (req, res)=>{
     article.body = req.body.body;
     article.category = req.body.category;
     article.usr = req.user.username;
-    article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…replace"); // take first 20 words
+    article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
     article.date = currDate();
     let upFile = req.files.upFile;
     if(upFile){
@@ -181,6 +181,6 @@ module.exports = router;
 
 function currDate(){
   var d = new Date();
-  datetime = d.getDate() + '/' + (1+ d.getMonth()) + '/' + d.getFullYear() + ', ' + d.getHours() + ':' + d.getMinutes();
+  datetime = d.getDate() + '/' + (1+ d.getMonth()) + '/' + d.getFullYear() + ', ' + d.getHours() + ':' + (d.getMinutes()<10?'0':'')+ d.getMinutes();
   return datetime;
 }
