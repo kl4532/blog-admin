@@ -36,7 +36,12 @@ let articleSchema = mongoose.Schema({
       comment: String,
       created: String,
       id: String,
+      admin: String,
     },
+    required: false,
+  },
+  img: {
+    type: Boolean,
     required: false,
   }
 });

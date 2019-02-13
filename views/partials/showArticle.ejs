@@ -1,5 +1,12 @@
 <div class="card mb-4">
-  <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+  <!--src="http://placehold.it/750x300"  -->
+  <!-- src ="https://d2d0b2rxqzh1q5.cloudfront.net/sv/2.183/dir/49e/image/49ebc3d998b49530536d4e9ee9b18a9d.jpg" -->
+  <!-- src="./public/images/<%= articles[i].author %><%= articles[i].title%>.jpg" -->
+  <% if(articles[i].img){ %>
+    <img class="card-img-top" src="../images/<%= articles[i].author %><%= articles[i].title%>.jpg" alt="Img">
+  <%} %>
+
+
   <div class="card-body">
     <h2 class="card-title d-flex justify-content-center"><%= articles[i].title %></h2>
     <p class="card-text"><%= articles[i].shorten %></p>

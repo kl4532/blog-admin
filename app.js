@@ -1,21 +1,20 @@
 const express = require('express');
 const path = require('path');
-var bodyParser =require('body-parser');
+const bodyParser =require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const config = require('./config/database');
-var paginate = require('paginate')();
-
+const paginate = require('paginate')();
+const fileUpload = require('express-fileupload');
 // Init App
 const app = express();
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-//var urlencodedParser = bodyParser.urlencoded({ extended: false });
-
+app.use(fileUpload());
 mongoose.connect('mongodb://localhost/nodekb' , { useNewUrlParser: true });
 let db = mongoose.connection;
 
@@ -102,6 +101,7 @@ app.get('/', (req, res) => {
       });
   }
 });
+
 // // for testing
 app.get('/test', (req, res) => {
   let longtext= "fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das fas s s adsas das";

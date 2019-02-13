@@ -47,6 +47,15 @@ router.post('/add', (req, res)=>{
     article.usr = req.user.username;
     article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…replace"); // take first 20 words
     article.date = currDate();
+    let upFile = req.files.upFile;
+    if(upFile){
+      console.log(upFile);
+      article.img = true;
+      upFile.mv(`./public/images/${article.author+article.title}.jpg`,false);
+    }
+
+    // Use the mv() method to place the file somewhere on your server
+
     article.save((err)=>{
       if(err) throw err;
       req.flash('success', 'Article Added');
@@ -71,22 +80,31 @@ router.post('/edit/:id', ensureAuthenticated, (req, res)=>{
     res.redirect('/');
   })
 });
-router.delete('/:id', (req,res)=>{
-  if(!req.user._id){
-    res.status(500).send();
+router.delete('/', ensureAuthenticated, (req,res)=>{
+  let id = req.query.id;
+  let cid = parseInt(req.query.cid);
+  // if(!req.user._id){
+  //   res.status(500).send();
+  // }s
+  //console.log(`id: ${id}, cid: ${cid}`);
+  let query = {_id:id}
+  if(isNaN(cid)){ // delete article
+    Article.findById(id, (err, article)=>{
+      // if(article.author != req.user.id){
+      //   res.status(500).send();
+      // }else{
+        Article.deleteOne(query, function(err){
+          if(err) throw err;
+          res.send('Success');
+        });
+      // }
+    })
+  }else{ // delete comment
+    Article.updateOne({_id: id}, { $pull: {"comment" : {id: cid}}}, function(err){
+      if(err) throw err;
+      res.send('Success');
+    });
   }
-  let query = {_id:req.params.id}
-
-  Article.findById(req.params.id, (err, article)=>{
-    if(article.author != req.user.id){
-      res.status(500).send();
-    }else{
-      Article.deleteOne(query, function(err){
-        if(err) throw err;
-        res.send('Success');
-      });
-    }
-  })
 });
 router.get('/:id', (req, res)=>{
   Article.findById(req.params.id, (err, article)=>{
@@ -132,6 +150,7 @@ router.post('/add-comment/:id', function(req, res) {
         comment: req.body.comment,
         created: currDate(),
         id: d.getTime(),
+        admin: req.body.admin,
     };
     Article.updateOne({_id:req.params.id}, {$push: { comment: new_comment }}, (err)=>{
       if(err) throw err;
@@ -140,14 +159,14 @@ router.post('/add-comment/:id', function(req, res) {
     })
   }
 });
-router.delete('/', ensureAuthenticated, (req,res)=>{ // delete comment
-  const id = req.query.id; // article id
-  const cid = parseInt(req.query.cid); // comment id
-      Article.updateOne({_id: id}, { $pull: {"comment" : {id: cid}}}, function(err){
-        if(err) throw err;
-        res.redirect(`/articles/${id}`);
-      });
-});
+// router.get('/comment/', (req,res)=>{ // delete comment
+//   const id = req.query.id; // article id
+//   const cid = parseInt(req.query.cid); // comment id
+//       Article.updateOne({_id: id}, { $pull: {"comment" : {id: cid}}}, function(err){
+//         if(err) throw err;
+//         res.redirect(`/articles/${id}`);
+//       });
+// });
 
 // Access control
 function ensureAuthenticated(req, res, next){

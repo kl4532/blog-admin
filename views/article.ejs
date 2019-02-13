@@ -7,7 +7,10 @@
   </head>
   <body>
     <% include partials/nav.ejs %>
-    <div class="well well-lg center">
+    <div class="well well-lg center art-content" style="">
+      <% if(article.img){ %>
+        <img class="card-img-top" src="../images/<%= article.author %><%= article.title%>.jpg" alt="Img">
+      <%} %>
       <h2><%= article.title %></h2>
       <h4>Author: <%= author %></h4>
       <p><%= article.body %></p>
@@ -17,22 +20,46 @@
           <a href="#" ><button data-id="<%= article.id %>" class="btn btn-danger delete-article" >delete</button></a>
       <% }} %>
     </div>
-    <h4>Comments</h4>
-    <form id="add-comment" method="POST" action='/articles/add-comment/<%= article._id%>'>
-      <textarea placeholder="Write your comment here!" type="text" name="comment" class="pb-cmnt-textarea"></textarea>
-      <input type="text" name="name" id="comment">
-      <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
-    </form>
-    <% if(article.comment){ %>
-      <% article.comment.reverse().forEach((com)=>{ %>
-        <p><%= com.name %>: <%= com.comment %>, <%= com.created %></p>
-      <% if(user) {%>
-        <% if(user.id==article.author) {%>
-          <a href="/?id=<%= article.id %>&cid=<%= com.id %>" ><button data-id="<%= article.id %>" data-cid="<%= com.id %>" class="btn btn-danger delete-comment" >delete</button></a>
-        <% }%>
-      <% } %>
-    <% })}; %>
 
+    <div class="form-group art-comments center">
+      <h4>Comments</h4>
+      <ul class="list-group">
+        <% if(article.comment){ %>
+          <% article.comment.reverse().forEach((com)=>{ %>
+            <li class="media">
+              <div class="media-body">
+                <nav class="navbar navbar-inverse mt-0 mb-1 list-group-item-info">
+                  <% if(com.admin=='admin'){ %>
+                    <h8><b><%= com.name %></b></h8><h8 class="nav navbar-nav navbar-right"><%= com.created %></h8> %>
+                  <%} else{ %>
+                    <h8><%= com.name %></h8><h8 class="nav navbar-nav navbar-right"><%= com.created %></h8>
+                  <% } %>
+                </nav>
+                <h6><%= com.comment %></h6>
+              </div>
+            </li>
+          <% if(user) {%>
+            <% if(user.id == article.author) {%>
+              <a href="#" ><button data-id="<%= article.id %>" data-cid="<%= com.id %>" class="btn btn-danger delete-comment" >delete</button></a>
+            <% }%>
+          <% } %>
+        <% })}; %>
+      </ul>
+      <hr />
+      <div class="bg-light">
+        <h5>Add comment</h5>
+        <form id="add-comment" method="POST" action='/articles/add-comment/<%= article._id%>'>
+          <% if(user && user.id == article.author) {%>
+            <input type="checkbox" name="admin" value="admin">Add as article author<br>
+            <input value=<%= article.usr %> type="text" name="name" id="comment" class="form-control">
+          <% }else {%>
+            <input placeholder="Your name" type="text" name="name" id="comment" class="form-control">
+          <% } %>
+          <textarea placeholder="Write your comment here!" type="text" name="comment" class="form-control"></textarea>
+          <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
+        </form>
+      </div>
+    </div>
     <script src="/js/main.js" charset="utf-8"></script>
   </body>
 </html>

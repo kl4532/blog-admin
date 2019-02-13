@@ -2,7 +2,6 @@
 border-style:solid;
 }
 .center{
-  text-align: center;
   margin-left: 100px;
   margin-right: 100px;
 }
@@ -18,4 +17,9 @@ h1{
   color: #3c763d;
   background-color: #dff0d8;
   border-color: #d6e9c6;
+}
+.art-content{
+  text-align: center;
+}
+.art-comments{
 }

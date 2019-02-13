@@ -7,8 +7,10 @@
   <body>
     <% include partials/nav.ejs %>
     <h1><%= title%></h1>
-    <form id="add-form" method="POST" action='/articles/add'>
+    <form id="add-form" method="POST" action='/articles/add' encType="multipart/form-data">
       <div class="form-group">
+        <input type="file" name="upFile" />
+        <input type='submit' value='Upload!' />
         <label for="title">Title</label>
         <input name="title" type="text" class="form-control" id="title" placeholder="title" >
       </div>
@@ -27,6 +29,7 @@
           <option value="kubica">Kubica</option>
         </select>
       </div>
+
       <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
     </form>
   </body>
