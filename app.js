@@ -116,6 +116,7 @@ app.get('/test', (req, res) => {
     article.date = "xxx";
     article.save();
   }
+  res.render('test');
 });
 function addrandom(){
   let categories=[], arr = ['zen', 'lifestyle', 'running', 'food', 'books', 'kubica'];

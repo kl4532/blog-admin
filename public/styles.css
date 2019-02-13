@@ -1,5 +1,6 @@
 html, body {
   overflow: auto;
+  margin-bottom: 50px;
 }
 .spacing{
   margin-left: 100px;
