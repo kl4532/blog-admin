@@ -7,7 +7,11 @@
   <body>
     <% include partials/nav.ejs %>
     <h1><%= title%></h1>
-    <form id="add-form" method="POST" action='/articles/edit/<%= article.id %>'>
+    <form id="add-form" method="POST" action='/articles/edit/<%= article.id %>' encType="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Add title picture</label><br/>
+        <input type="file" name="upFile" /><br/>
+      </div>
       <div class="form-group">
         <label for="title">Title</label>
         <input name="title" type="text" class="form-control" id="title" value="<%= article.title %>">

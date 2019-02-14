@@ -43,7 +43,11 @@ let articleSchema = mongoose.Schema({
   img: {
     type: Boolean,
     required: false,
+  },
+  imgName: {
+    type: String,
+    required: false,
   }
 });
-
+articleSchema.index({title: 'text', body: 'text'});
 let Article = module.exports = mongoose.model('Article', articleSchema);

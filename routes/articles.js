@@ -49,9 +49,10 @@ router.post('/add', (req, res)=>{
     article.date = currDate();
     let upFile = req.files.upFile;
     if(upFile){
-      console.log(upFile);
+      article.imgName = article.author+article.title;
+      console.log(article.imgName);
       article.img = true;
-      upFile.mv(`./public/images/${article.author+article.title}.jpg`,false);
+      upFile.mv(`./public/images/${article.imgName}.jpg`,false);
     }
 
     // Use the mv() method to place the file somewhere on your server
@@ -74,6 +75,13 @@ router.post('/edit/:id', ensureAuthenticated, (req, res)=>{
   article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
   article.date = currDate();
   let query = {_id:req.params.id}
+  let upFile = req.files.upFile;
+  if(upFile){
+    article.imgName = article.author+article.title;
+    article.img = true;
+    console.log(article.imgName);
+    upFile.mv(`./public/images/${article.imgName}.jpg`,false);
+  }
   Article.updateOne(query, article, (err)=>{
     if(err) throw err;
     req.flash('success', 'Article updated');
@@ -108,16 +116,20 @@ router.delete('/', ensureAuthenticated, (req,res)=>{
 });
 router.get('/:id', (req, res)=>{
   Article.findById(req.params.id, (err, article)=>{
-    User.findById(article.author, (err, user)=>{
-      res.render('article', {
-        article: article,
-        author: user.name
+    if(article){
+      User.findById(article.author, (err, user)=>{
+        res.render('article', {
+          article: article,
+          author: user.name
+        });
       });
-    });
+    }else{res.render('404');};
   });
 });
 router.post('/search', (req, res)=>{
-  Article.find({$text : { $search: req.body.search}}, (err, articles)=>{
+  req.checkBody('search', 'No result').notEmpty();
+  // Get errors
+  Article.find({$text : { $search: `"${req.body.search}"`}}, (err, articles)=>{
     if(err) throw err;
     let totalItems = articles.length, itemsPerPage = 6, pageNum=1;
     let pages = Math.ceil(totalItems/itemsPerPage);

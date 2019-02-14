@@ -9,7 +9,7 @@
     <% include partials/nav.ejs %>
     <div class="art-content spacing" >
       <% if(article.img){ %>
-        <img class="card-img-top" src="../images/<%= article.author %><%= article.title%>.jpg" alt="Img">
+        <img class="card-img-top" src="../images/<%= article.imgName %>.jpg" alt="Img">
       <%} %>
       <h1><%= article.title %></h1>
       <h5 class="text-center">by: <%= author %></h5>
