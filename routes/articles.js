@@ -117,10 +117,12 @@ router.delete('/', ensureAuthenticated, (req,res)=>{
 router.get('/:id', (req, res)=>{
   Article.findById(req.params.id, (err, article)=>{
     if(article){
+      console.log(article.author);
       User.findById(article.author, (err, user)=>{
         res.render('article', {
           article: article,
-          author: user.name
+          //author: user.name
+          author: article.usr
         });
       });
     }else{res.render('404');};
