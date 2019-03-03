@@ -45,7 +45,7 @@ router.post('/add', (req, res)=>{
     article.body = req.body.body;
     article.category = req.body.category;
     article.usr = req.user.username;
-    article.shorten = article.body.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…"); // take first 20 words
+    article.shorten = article.body.substring(0, 100)+"..."; // take first 100 words
     article.date = currDate();
     let upFile = req.files.upFile;
     if(upFile){

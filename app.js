@@ -136,8 +136,8 @@ let articles =require('./routes/articles');
 let users =require('./routes/users');
 app.use('/articles', articles);
 app.use('/users', users);
-app.listen(3000, ()=>{
-  console.log("server is running on port 3000");
+app.listen(3000 || 80, ()=>{
+  console.log("server is running on port 3000 or 80");
 });
 //
 // <% articles[i].category.forEach((cat)=>{ %>
