@@ -9,12 +9,9 @@
     <% include partials/nav.ejs %>
   <!-- Page Content -->
 <div class="container">
-
   <div class="row">
-
     <!-- Blog Entries Column -->
     <div class="col-md-8">
-
       <!-- Blog Post -->
       <% if(page!==1){ %> <!-- for pages different than 1(home)-->
         <% if(articles.length-1-(itemsPerPage*(page-1))< itemsPerPage) {%> <!-- last page not full -->
@@ -41,20 +38,7 @@
     <!-- Sidebar Widgets Column -->
     <div class="col-md-4">
 
-      <!-- Search Widget -->
-      <form id="search-form" method="POST" action='/articles/search'>
-        <div class="card my-4">
-          <h5 class="card-header">Search (by title)</h5>
-          <div class="card-body">
-            <div class="input-group">
-              <input name="search" type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="submit">Go!</button>
-              </span>
-            </div>
-          </div>
-        </div>
-    </form>
+      
 
       <!-- Categoriestext Widget -->
       <div class="card my-4">

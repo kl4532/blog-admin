@@ -1,12 +1,9 @@
+/*Global  */
 html, body {
   overflow: auto;``
 }
-.spacing{
-  margin-left: 100px;
-  margin-right: 100px;
-}
 h1{
-    text-align: center;
+  text-align: center;
 }
 .alert-error{
   color: #a94442;
@@ -18,12 +15,38 @@ h1{
   background-color: #dff0d8;
   border-color: #d6e9c6;
 }
+/* Nav */
+
+#nav-menu{
+  float: right;
+}
+/*Article  */
+.wrapper{
+  width: 80%;
+  margin: auto;
+}
 .art-content{
   text-align: justify;
 }
-.art-comments{
+.art-comments h4, h5 {
+  text-align: center;
 }
+
 .no-art{
   color: gray;
   padding: 30px;
+}
+footer {
+  margin-top: 10px;
+}
+
+@media(max-width: 500px) {
+  #nav-title, #nav-hamburger, #main-nav ul{
+    margin: auto;
+    text-align: center;
+  }
+  #main-nav ul{
+    float: none;
+  }
+
 }

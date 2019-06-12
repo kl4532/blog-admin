@@ -7,46 +7,48 @@
   </head>
   <body>
     <% include partials/nav.ejs %>
-    <div class="art-content spacing" >
-      <% if(article.img){ %>
-        <img class="card-img-top" src="../images/<%= article.imgName %>.jpg" alt="Img">
-      <%} %>
-      <h1><%= article.title %></h1>
-      <h5 class="text-center">by: <%= author %></h5>
-      <p><%= article.body %></p>
-      <% if(user) {%>
-        <% if(user.id == article.author) {%>
-          <a href="/articles/edit/<%= article.id %>"><button class="btn btn-info" >edit</button></a>
-          <a href="#" ><button data-id="<%= article.id %>" class="btn btn-danger delete-article" >delete</button></a>
-      <% }} %>
-    </div>
-    <hr />
-    <div class="form-group art-comments spacing">
-      <h4>Comments</h4>
-      <ul class="list-group">
-        <% if(article.comment){ %>
-          <% article.comment.reverse().forEach((com)=>{ %>
-            <li class="media">
-              <div class="media-body">
-                <nav class="navbar navbar-inverse mt-0 mb-1 list-group-item-info">
-                  <% if(com.admin=='admin'){ %>
-                    <h8><b><%= com.name %></b></h8><h8 class="nav navbar-nav navbar-right"><%= com.created %></h8> %>
-                  <%} else{ %>
-                    <h8><%= com.name %></h8><h8 class="nav navbar-nav navbar-right"><%= com.created %></h8>
-                  <% } %>
-                </nav>
-                <h6><%= com.comment %></h6>
-              </div>
-            </li>
-          <% if(user) {%>
-            <% if(user.id == article.author) {%>
-              <a href="#" ><button data-id="<%= article.id %>" data-cid="<%= com.id %>" class="btn btn-danger delete-comment" >delete</button></a>
-            <% }%>
-          <% } %>
-        <% })}; %>
-      </ul>
+    <div class="wrapper">
+      <div class="art-content spacing" >
+        <% if(article.img){ %>
+          <img class="card-img-top" src="../images/<%= article.imgName %>.jpg" alt="Img">
+        <%} %>
+        <h1><%= article.title %></h1>
+        <h5 class="text-center">by: <%= author %></h5>
+        <p><%= article.body %></p>
+        <% if(user) {%>
+          <% if(user.id == article.author) {%>
+            <a href="/articles/edit/<%= article.id %>"><button class="btn btn-info" >edit</button></a>
+            <a href="#" ><button data-id="<%= article.id %>" class="btn btn-danger delete-article" >delete</button></a>
+        <% }} %>
+      </div>
+
       <hr />
-      <div class="bg-light">
+
+      <div class="form-group art-comments">
+        <h4>Comments</h4>
+        <ul class="list-group">
+          <% if(article.comment){ %>
+            <% article.comment.reverse().forEach((com)=>{ %>
+              <li class="media">
+                <div class="media-body">
+                  <nav class="navbar navbar-inverse mt-0 mb-1 list-group-item-info">
+                    <% if(com.admin=='admin'){ %>
+                      <h8><b><%= com.name %></b></h8><h8 class="nav navbar-nav navbar-right"><%= com.created %></h8> %>
+                    <%} else{ %>
+                      <h8><%= com.name %></h8><h8 class="nav navbar-nav navbar-right"><%= com.created %></h8>
+                    <% } %>
+                  </nav>
+                  <h6><%= com.comment %></h6>
+                </div>
+              </li>
+            <% if(user) {%>
+              <% if(user.id == article.author) {%>
+                <a href="#" ><button data-id="<%= article.id %>" data-cid="<%= com.id %>" class="btn btn-danger delete-comment" >delete</button></a>
+              <% }%>
+            <% } %>
+          <% })}; %>
+        </ul>
+        <hr />
         <h5>Add comment</h5>
         <form id="add-comment" method="POST" action='/articles/add-comment/<%= article._id%>'>
           <% if(user && user.id == article.author) {%>
@@ -55,8 +57,8 @@
           <% }else {%>
             <input placeholder="Your name" type="text" name="name" id="comment" class="form-control">
           <% } %>
-          <textarea placeholder="Write your comment here!" type="text" name="comment" class="form-control"></textarea>
-          <button type="submit" value="Submit" class="btn btn-secondary">Submit</button>
+          <textarea placeholder="Write your comment here..." type="text" name="comment" class="form-control"></textarea>
+          <button type="submit" value="Submit" class="btn btn-secondary w-100">Submit</button>
         </form>
       </div>
     </div>
